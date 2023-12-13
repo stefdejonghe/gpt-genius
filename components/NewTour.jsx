@@ -16,6 +16,8 @@ const NewTour = () => {
     data: tour,
   } = useMutation({
     mutationFn: async (destination) => {
+      // Hier wordt met verschillende methodes gewerkt om de 10 seconden timeout van de Vercel server te omzeilen.
+      // Aangezien de calls vanuit de frontend komen zorgt dit ervoor dat we de backend niet vastloopt. (Vercel)
       const existingTour = await getExistingTour(destination);
       if (existingTour) return existingTour;
       const newTour = await generateTourResponse(destination);
