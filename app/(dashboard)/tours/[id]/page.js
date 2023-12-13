@@ -3,16 +3,23 @@ import { generateTourImage, getSingleTour } from "@/utils/actions";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import axios from "axios";
 
 const SingleTourPage = async ({ params }) => {
   const tour = await getSingleTour(params.id);
 
   if (!tour) redirect("/tours");
 
-  const tourImage = await generateTourImage({
-    city: tour.city,
-    country: tour.country,
-  });
+  // // OpenAI image generation (expensive!)
+  //   const tourImage = await generateTourImage({
+  //     city: tour.city,
+  //     country: tour.country,
+  //   });
+
+  // Unsplash images (cheaper/free)
+  const url = `https://api.unsplash.com/search/photos?client_id=${process.env.UNSPLASH_API_KEY}&query=`;
+  const { data } = await axios.get(`${url}${tour.city}`);
+  const tourImage = data?.results[0]?.urls?.raw;
 
   return (
     <div>
