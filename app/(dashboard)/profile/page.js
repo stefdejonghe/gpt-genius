@@ -1,9 +1,15 @@
-import { UserProfile } from "@clerk/nextjs";
+import { fetchUserTokensById } from "@/utils/actions";
+import { UserProfile, auth } from "@clerk/nextjs";
 
-const ProfilePage = () => {
+const ProfilePage = async () => {
+  const { userId } = auth();
+  const currentTokens = await fetchUserTokensById(userId);
   return (
-    <div className="min-h-screen flex justify-center items-center">
-      <UserProfile />;
+    <div>
+      <h2 className="mb-8 ml-8 text-xl font-extrabold">
+        Token amount: {currentTokens}
+      </h2>
+      <UserProfile />
     </div>
   );
 };

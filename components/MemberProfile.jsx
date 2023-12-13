@@ -1,13 +1,16 @@
+import { fetchOrGenerateTokens } from "@/utils/actions";
 import { UserButton, auth, currentUser } from "@clerk/nextjs";
 
 const MemberProfile = async () => {
-  //   const user = await currentUser(); // Uit comments halen op pc thuis
-  //   const { userId } = auth();
+  const user = await currentUser();
+  const { userId } = auth();
+  await fetchOrGenerateTokens(userId);
   return (
     <div className="px-4 flex items-center gap-2">
-      <UserButton afterSignOutUrl="/" showName />
-      {/* Lijn hieronder uit comments halen op pc thuis */}
-      {/* <p>{user.emailAddresses[0].emailAddress}</p>   */}
+      <UserButton afterSignOutUrl="/" />
+      <p>
+        {user.firstName} {user.lastName}
+      </p>
     </div>
   );
 };
